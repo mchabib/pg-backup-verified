@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck and bats
+        run: sudo apt-get update && sudo apt-get install -y shellcheck bats
+      - name: shellcheck
+        run: make lint
+      - name: bats
+        run: make test
+
+  integration:
+    runs-on: ubuntu-24.04
+    needs: lint-and-unit
+    steps:
+      - uses: actions/checkout@v4
+      - name: Backup, restore drill, and negative cases
+        run: make integration

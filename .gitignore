@@ -1,0 +1,5 @@
+.env
+logs/
+backups/
+demo/backups/
+*.partial
